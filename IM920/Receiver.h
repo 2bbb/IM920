@@ -38,7 +38,7 @@ public:
         return true;
     }
 
-	void update()
+    void update()
     {
         while (stream->available())
         {
@@ -57,14 +57,14 @@ public:
         }
     }
 
-    uint8_t remoteNode() { return bin_buffer.node; }
-    uint16_t remoteUID() { return bin_buffer.uid; }
-    uint8_t remoteRSSI() { return bin_buffer.rssi; }
+    uint8_t remoteNode() const { return bin_buffer.node; }
+    uint16_t remoteUID() const { return bin_buffer.uid; }
+    uint8_t remoteRSSI() const { return bin_buffer.rssi; }
 
-    const char* data() { return (const char*)bin_buffer.data; }
-    uint8_t data(const uint8_t i) { return bin_buffer.data[i]; }
+    const char* data() const { return (const char*)bin_buffer.data; }
+    uint8_t data(const uint8_t i) const { return bin_buffer.data[i]; }
 
-    bool available() { return is_available; }
+    bool available() const { return is_available; }
 
     void pop()
     {
@@ -72,9 +72,9 @@ public:
         memset(bin_buffer.data, 0, sizeof(bin_buffer.data));
     }
 
-    uint8_t size() { return bin_buffer.size; }
+    uint8_t size() const { return bin_buffer.size; }
 
-	void print();
+    void print();
 
 protected:
 
@@ -189,29 +189,29 @@ protected:
         Serial.println(data(size() - 1), HEX);
     }
 
-	template <>
-	uint8_t Receiver<Stream>::readByte() { return (uint8_t)stream->read(); }
+    template <>
+    uint8_t Receiver<Stream>::readByte() { return (uint8_t)stream->read(); }
 
     template <>
     void Receiver<Stream>::verbose(const char* c) { Serial.print(c); }
 
 #elif defined (OF_VERSION_MAJOR)
 
-	template <>
-	void Receiver<ofSerial>::print()
-	{
-		std::stringstream ss;
+    template <>
+    void Receiver<ofSerial>::print()
+    {
+        std::stringstream ss;
         ss << hex << std::setw(2) << std::setfill('0');
-		ss << (int)remoteNode() << ",";
-		ss << (int)remoteUID()  << ",";
-		ss << (int)remoteRSSI() << ":";
+        ss << (int)remoteNode() << ",";
+        ss << (int)remoteUID()  << ",";
+        ss << (int)remoteRSSI() << ":";
         for (size_t i = 1; i < size(); ++i) ss << (int)data(i - 1) << ",";
 		ss << (int)data(size() - 1) << endl;
         cout << ss.str() << endl;
-	}
+    }
 
-	template <>
-	uint8_t Receiver<ofSerial>::readByte() { return (uint8_t)stream->readByte(); }
+    template <>
+    uint8_t Receiver<ofSerial>::readByte() { return (uint8_t)stream->readByte(); }
 
     template <>
     void Receiver<ofSerial>::verbose(const char* c) { cout << c; }

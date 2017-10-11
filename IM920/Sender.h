@@ -239,7 +239,7 @@ protected:
     using StringType = String;
 
     template <typename T, typename std::enable_if<std::is_integral<typename std::remove_reference<T>::type>::value>::type* = nullptr>
-    String toHex(const T& value)
+    static String toHex(const T& value) const
     {
         size_t size = sizeof(T) * 2;
         String format = "%0" + String(size) + "X";
@@ -248,13 +248,13 @@ protected:
         return String(hex);
     }
 
-    bool empty() { return (asc_buffer.length() == 0); }
+    bool empty() const { return (asc_buffer.length() == 0); }
 
 #elif defined OF_VERSION_MAJOR
 
     using StringType = std::string;
 
-    bool empty() { return asc_buffer.empty(); }
+    bool empty() const { return asc_buffer.empty(); }
 
 #else
 

@@ -207,14 +207,14 @@ protected:
         ss << (int)remoteRSSI() << ":";
         for (size_t i = 1; i < size(); ++i) ss << (int)data(i - 1) << ",";
 		ss << (int)data(size() - 1) << endl;
-        cout << ss.str() << endl;
+        std::cout << ss.str() << std::endl;
     }
 
     template <>
     uint8_t Receiver<ofSerial>::readByte() { return (uint8_t)stream->readByte(); }
 
     template <>
-    void Receiver<ofSerial>::verbose(const char* c) { cout << c; }
+    void Receiver<ofSerial>::verbose(const char* c) { std::cout << c; }
 
 #else
 
